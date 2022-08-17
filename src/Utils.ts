@@ -14,7 +14,7 @@ export default class Utils {
 
     public async execute(payload: string, from: string, account: string) {
         const keyManager = await this.getKeyManager(account);
-        await keyManager.methods.execute(payload).send({
+        return await keyManager.methods.execute(payload).send({
             from,
             gasLimit: process.env.GAS_LIMIT,
         });

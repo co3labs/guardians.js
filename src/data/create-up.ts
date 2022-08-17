@@ -1,4 +1,3 @@
-import Web3 from 'web3';
 import dotenv from 'dotenv';
 import { LSPFactory } from '@lukso/lsp-factory.js';
 
@@ -15,7 +14,7 @@ const lspFactory = new LSPFactory(provider, {
 async function createUP() {
     const contracts = await lspFactory.UniversalProfile.deploy(
         {
-            controllerAddresses: [process.env.CONTROLLER],
+            controllerAddresses: [process.env.CONTROLLER, process.env.CONTROLLER2],
 
         },
         {
