@@ -23,16 +23,17 @@ export default class Recovery {
      * @param account 
      * @returns 
      */
-    public async createRecoveryVault(account: string) {
+    public async createRecoveryVault(account: string, walletAddress:string) {
         let params = {
             operation: 1, //deploy new contract
             to: '0x0000000000000000000000000000000000000000',
             value: 0,
             data: this.artifacts.bytecode //LSP11 bytecode
         }
+        console.log(account, walletAddress)
         let payload = await this.utils.encodePayload(account, params);
-        console.log(payload);
-        const tx = await this.utils.execute(payload, this.web3.eth.defaultAccount, account);
+        console.log("Payload: \n",payload);
+        const tx = await this.utils.execute(payload, walletAddress, account);
         console.log(tx);
         return tx;
     }
