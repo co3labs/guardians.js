@@ -20,6 +20,6 @@
       "web3-eth-contract": ["node_modules/web3-eth-contract"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "data.js"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }
