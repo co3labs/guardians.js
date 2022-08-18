@@ -18,7 +18,7 @@ async function createUP() {
 
         },
         {
-            ERC725Account: {
+            LSP0ERC725Account: {
                 deployProxy: false
             },
             LSP6Keymanager: {

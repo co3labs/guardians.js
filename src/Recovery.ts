@@ -1,20 +1,20 @@
 import Web3 from "web3";
 import LSP11Artifacts from "./artifacts/LSP11BasicSocialRecovery.json";
+import ERC725Utils from "./ERC725Utils";
 import Utils from './Utils';
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 export default class Recovery {
     private artifacts: any;
     private web3: Web3;
     private utils: Utils;
+    private erc725Utils: ERC725Utils;
 
 
     constructor(_web3: Web3) {
         this.web3 = _web3;
         this.artifacts = LSP11Artifacts;
-        this.utils = new Utils(_web3)
+        this.utils = new Utils(_web3);
+        this.erc725Utils = new ERC725Utils(_web3);
 
     }
 
@@ -28,7 +28,7 @@ export default class Recovery {
             operation: 1, //deploy new contract
             to: '0x0000000000000000000000000000000000000000',
             value: 0,
-            data: this.artifacts.bytecode //LSP11 bytecode
+            data: this.artifacts.bytecode + this.web3.utils.padLeft(account.substring(2), 64, '0') //LSP11 bytecode + constructor
         }
         let payload = await this.utils.encodePayload(account, params);
         console.log(payload);
@@ -275,5 +275,17 @@ export default class Recovery {
         return tx;
     }
 
+    /**
+     * Checks if a given controller has necessary ADDPERMISSIONS on ERC725Account
+     * to create a Recovery Vault for that account.
+     * @param controller 
+     * @param account 
+     * @returns 
+     */
+    public async canCreateRecoveryVault(controller: string, account: string): Promise<boolean> {
+        return this.erc725Utils.canAddPermissions(controller, account);
+    }
 
 }
+
+
