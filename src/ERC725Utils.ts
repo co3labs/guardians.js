@@ -14,6 +14,13 @@ export default class ERC725Utils {
         this.utils = new Utils(web3);
     }
 
+    /**
+     * Returns TRUE if 'controller' has ADDPERMISSIONS permission on a given 'account'. 
+     * Returns FALSE otherwise.
+     * @param controller 
+     * @param account 
+     * @returns 
+     */
     public async canAddPermissions(controller: string, account: string): Promise<boolean> {
 
         if (!this.web3.utils.isAddress(controller) || !this.web3.utils.isAddress(account)) {
@@ -57,7 +64,18 @@ export default class ERC725Utils {
         return false;
     }
 
+    /**
+     * Grants ADDPERMISSIONS permission to 'beneficiary' address on a given 'account'. Assuming
+     * 'controller' has ADDPERMISSIONS permissions to allow 'beneficiary' same permissions.
+     * @param controller 
+     * @param beneficiary 
+     * @param account 
+     */
     public async grantAddPermissions(controller: string, beneficiary: string, account: string) {
+
+        if (!this.canAddPermissions(controller, account)) {
+            throw new Error("Controller doesn't have permissions to ADDPERMISSIONS");
+        }
 
         const erc725 = new ERC725(
             LSP6Schema as any,
@@ -86,6 +104,6 @@ export default class ERC725Utils {
         const payload = accountInst.methods["setData(bytes32,bytes)"](data.keys[0], data.values[0]).encodeABI();
 
         // send the transaction via the Key Manager contract
-        await this.utils.execute(payload, controller, account);
+        return await this.utils.execute(payload, controller, account);
     }
 }
