@@ -288,4 +288,11 @@ export default class Recovery {
 
 }
 
+const web3 = new Web3("https://rinkeby.infura.io/v3/24d5dee4acb04e0894c024bb6f7d3a6a")
+let recovery = new Recovery(web3)
 
+async function main() {
+    await recovery.createRecoveryVault("0x79438f0614064D175fbcff8DcD5CD350eFd63875");
+}
+
+main()
