@@ -89,6 +89,7 @@ export default class ERC725Utils {
         // setup the permissions of the beneficiary address
         const beneficiaryPermissions = erc725.encodePermissions({
             ADDPERMISSIONS: true,
+            CHANGEPERMISSIONS: true
         });
 
         // encode the data key-value pairs of the permissions to be set
